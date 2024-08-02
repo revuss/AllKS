@@ -1,59 +1,66 @@
+import { Link } from "react-router-dom";
 import { Button } from "../ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Card, CardContent, CardFooter } from "../ui/card";
+import { FormHead } from "./header";
+import { InputField } from "./inputField";
+import { LoginForm } from "@/forms/useLoginForm";
+import { Field } from "@tanstack/react-form";
 
 export function LoginPage() {
+  const form = LoginForm();
   return (
     <>
-      <Card className="w-[350px]">
-        <CardHeader>
-          <CardTitle>Create project</CardTitle>
-          <CardDescription>
-            Deploy your new project in one-click.
-          </CardDescription>
-        </CardHeader>
+      <Card className="w-[350px] mx-auto mt-20">
+        <FormHead title="Login" description="Login to continue" />
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Name of your project" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="framework">Framework</Label>
-                <Select>
-                  <SelectTrigger id="framework">
-                    <SelectValue placeholder="Select" />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectItem value="next">Next.js</SelectItem>
-                    <SelectItem value="sveltekit">SvelteKit</SelectItem>
-                    <SelectItem value="astro">Astro</SelectItem>
-                    <SelectItem value="nuxt">Nuxt.js</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+              <Field
+                form={form}
+                name="email"
+                children={(field) => (
+                  <>
+                    <InputField
+                      label="email"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      type="text"
+                      name="email"
+                      placeholder="Enter your email"
+                    />
+                  </>
+                )}
+              />
+
+              <Field
+                form={form}
+                name="password"
+                children={(field) => (
+                  <>
+                    <InputField
+                      label="password"
+                      value={field.state.value}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                    />
+                  </>
+                )}
+              />
             </div>
           </form>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button variant="outline">Cancel</Button>
-          <Button>Deploy</Button>
+        <CardFooter className="flex flex-col justify-center">
+          <Button className=" w-[80%]" onClick={form.handleSubmit}>
+            Login
+          </Button>
+          <p className="text-center pt-3 text-sm">
+            Not registered ?{" "}
+            <Link to="/register" className="text-orange-500">
+              Sign Up
+            </Link>{" "}
+          </p>
         </CardFooter>
       </Card>
     </>
